@@ -8,10 +8,10 @@ from psycopg2 import Error
 
 
 # conectarse a la base de datos
-def connect():
+def conectar():
     try:
         connection = psycopg2.connect(user="postgres",
-                                      password="123456",
+                                      password="admin",
                                       host="localhost",
                                         database="arqui")
         return connection
@@ -41,13 +41,6 @@ print("Modo:", modo)
 modo: insertar
 argumentos: "prueba 2020;descripcion de prueba;2020-10-10;1;rosendo;1;path1,path2,path3"
 """
-def formato(modo: str, argumentos: str) -> None:
-    if modo == "insertar":
-        argumentos = argumentos.split(";") # -> [titulo, descripcion, fecha, estado, publicador, tipo_publicacion, asignatura, paths]
-        insertarPublicacion(argumentos[0], argumentos[1], argumentos[2], argumentos[3], argumentos[4], argumentos[5], argumentos[6], argumentos[7])
-    else:
-        print("Error: modo incorrecto")
-
 
 """
 titulo: prueba 2020"
@@ -60,23 +53,22 @@ asignatura: "Ingeniería de Software"
 paths: "path1, path2, path3"
 """
 def insertarPublicacion(titulo: str, descripcion: str, fecha: str, estado: str, publicador: str, tipo_publicacion: str, asignatura: str, paths: str) -> None:
-    connect = connect()
+    connect = conectar()
     cursor = connect.cursor()
 
     try:
         # Insertar la publicación y obtener el id_publicacion
         cursor.execute("""
-            INSERT INTO publicaciones (titulo, descripcion, fecha, estado, publicador, tipo_publicacion, asignatura)
+            INSERT INTO publicacion (titulo, descripcion, fecha_publicacion, id_estado, id_usuario, id_tipo, id_asignatura)
             VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id
         """, (titulo, descripcion, fecha, estado, publicador, tipo_publicacion, asignatura))
-        
         # Obtener el id de la publicación insertada
         id_publicacion = cursor.fetchone()[0]
         
         # Insertar archivos en una sola consulta
         paths = paths.split(",")
         archivos_data = [(path.strip(), id_publicacion) for path in paths]
-        cursor.executemany("INSERT INTO archivos (path, publicacion) VALUES (%s, %s)", archivos_data)
+        cursor.executemany("INSERT INTO archivo (ruta, id_publicacion) VALUES (%s, %s)", archivos_data)
         
         # Confirmar transacción
         connect.commit()
@@ -91,4 +83,11 @@ def insertarPublicacion(titulo: str, descripcion: str, fecha: str, estado: str, 
         disconnect(connect)
 
 
+def formato(modo: str, argumentos: str) -> None:
+    if modo == "insertar":
+        argumentos = argumentos.split(";") # -> [titulo, descripcion, fecha, estado, publicador, tipo_publicacion, asignatura, paths]
+        insertarPublicacion(argumentos[0], argumentos[1], argumentos[2], argumentos[3], argumentos[4], argumentos[5], argumentos[6], argumentos[7])
+    else:
+        print("Error: modo incorrecto")
 
+formato(modo, argumentos)
