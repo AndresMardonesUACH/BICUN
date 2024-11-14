@@ -39,7 +39,7 @@ function FileUploader() {
     };
 
     const fetchTipos = async () => {
-        const response = await fetch('http://localhost:5000/asignaturas');
+        const response = await fetch('http://localhost:5000/tipos');
         const data = await response.json();
         setTipos(data);
     };

@@ -33,9 +33,11 @@ def disconnect(connection):
 # recibir argumentos
 if len(sys.argv) > 1:
     modo = sys.argv[1] # modos: insertar
+if len(sys.argv) == 3:
     argumentos = sys.argv[2]
 else:
-    print("Error: faltan argumentos")
+    argumentos= ""
+
 
 
 # print("Modo:", modo)
@@ -137,8 +139,13 @@ def obtenerTipos() -> None:
         cursor.execute("SELECT * FROM tipoPublicacion")
         
         # Recuperar todos los resultados
-        resultados = cursor.fetchall()
-
+        tipos = cursor.fetchall()
+        resultados = []
+        for tipo in tipos:
+            resultados.append({
+                "id": tipo[0],
+                "nombre": tipo[1]
+            })
         return resultados
 
     except Exception as e:
@@ -158,6 +165,8 @@ def handler(modo: str, argumentos: str):
         return
     elif modo == "get":
         return obtenerPublicacionesAsignatura(argumentos)
+    elif modo =="getTipos":
+        return obtenerTipos()
     else:
         print("Error: modo incorrecto")
 

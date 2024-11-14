@@ -45,5 +45,15 @@ def list_files():
     response = jsonify(json.loads(result.stdout))
     return response
 
+@app.route('/tipos', methods=['GET'])
+def list_types():
+    result = subprocess.run(
+        ['python', 'persistencia_datos.py', 'getTipos'], 
+        stdout=subprocess.PIPE, 
+        text=True
+    )
+    response = jsonify(json.loads(result.stdout))
+    return response
+
 if __name__ == '__main__':
     app.run(debug=True)
