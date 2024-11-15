@@ -15,6 +15,18 @@ function FileUploader() {
         setSelectedFile(e.target.files[0]);
     };
 
+    function handleSelect(id) {
+        var select = document.getElementById(id);
+        var valor = select.options[select.selectedIndex].value;
+        if (valor != "") {
+            switch (id) {
+                case "type":
+                    setType(valor)
+                    break
+            }
+        }
+    }
+
     const uploadFile = async () => {
         const formData = new FormData();
         formData.append('file', selectedFile);
@@ -27,6 +39,7 @@ function FileUploader() {
             method: 'POST',
             body: formData,
         });
+
         const data = await response.json();
         console.log('File uploaded:', data);
         fetchFiles();  // Update file list after upload
@@ -54,10 +67,10 @@ function FileUploader() {
         <div className='div-main'>
             <div className='div-form'>
                 <input required type="text" name='title' id='title' placeholder='Título' className="form-input" onChange={(e) => setTitle(e.target.value)} value={title} />
-                <input required type="number" name='user' id='user' placeholder='Usuario' className="form-input" onChange={(e) => setUser(e.target.value)} value={user} />
+                <input required type="text" name='user' id='user' placeholder='Usuario' className="form-input" onChange={(e) => setUser(e.target.value)} value={user} />
                 <select name="type" id="type" required className="form-input" onChange={(e) => handleSelect(e.target.id)} value={type}>
-                    {tipos.map((x) => (
-                        <option value={x.id}>{x.nombre}</option>
+                    {tipos.map((x, index) => (
+                        <option key={index} value={x.id}>{x.nombre}</option>
                     ))}
                 </select>
                 <input required type="text" name='asignatura' id='asignatura' placeholder='Asignatura' className="form-input" onChange={(e) => setAsignatura(e.target.value)} value={asignatura} />
