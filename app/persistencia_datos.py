@@ -33,10 +33,12 @@ def disconnect(connection):
 # recibir argumentos
 if len(sys.argv) > 1:
     modo = sys.argv[1] # modos: insertar
-if len(sys.argv) == 3:
+argumentos = ""
+if len(sys.argv) > 2:
     argumentos = sys.argv[2]
-else:
-    argumentos= ""
+for i in range(3, len(sys.argv)):
+    argumentos = argumentos + " " + sys.argv[i]
+
 
 
 
@@ -169,6 +171,6 @@ def handler(modo: str, argumentos: str):
         return obtenerTipos()
     else:
         print("Error: modo incorrecto")
-
 data = handler(modo, argumentos)
-print(json.dumps(data))
+if(modo == "getTipos" or modo == "get"):
+    print(json.dumps(data))

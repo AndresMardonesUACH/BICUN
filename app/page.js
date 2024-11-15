@@ -81,7 +81,7 @@ function FileUploader() {
                 <h2>Uploaded Files:</h2>
                 <ul>
                     {files.map((file) => (
-                        <li key={file.id}>{file.id} {file.titulo} {file.asignatura}</li>
+                        <li key={file.id}>{file.titulo}</li>
                     ))}
                 </ul>
             </div>
