@@ -13,9 +13,11 @@ import json
 def conectar():
     try:
         connection = psycopg2.connect(user="postgres",
-                                      password="admin",
-                                      host="localhost",
-                                        database="arqui")
+                                      password="contra",
+                                      host="db", # nombre del servicio en docker-compose.yml
+                                      database="arqui",
+                                      port = "5433"
+                                      )
         return connection
     except (Exception, Error) as error:
         print("Error while connecting to PostgreSQL", error)

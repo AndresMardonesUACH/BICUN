@@ -56,8 +56,8 @@ function FileUploader() {
                 <input required type="text" name='title' id='title' placeholder='Título' className="form-input" onChange={(e) => setTitle(e.target.value)} value={title} />
                 <input required type="number" name='user' id='user' placeholder='Usuario' className="form-input" onChange={(e) => setUser(e.target.value)} value={user} />
                 <select name="type" id="type" required className="form-input" onChange={(e) => handleSelect(e.target.id)} value={type}>
-                    {tipos.map((x) => (
-                        <option value={x.id}>{x.nombre}</option>
+                    {tipos.map((x,index) => (
+                        <option key={index} value={x.id}>{x.nombre}</option>
                     ))}
                 </select>
                 <input required type="text" name='asignatura' id='asignatura' placeholder='Asignatura' className="form-input" onChange={(e) => setAsignatura(e.target.value)} value={asignatura} />

@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest  # Usa la imagen oficial de PostgreSQL
+    environment:
+      POSTGRES_DB: arqui            # Nombre de la base de datos 
+      POSTGRES_USER: postgres       # Usuario de la base de datos
+      POSTGRES_PASSWORD: contra   # Contraseña de la base de datos
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d  # Monta la carpeta de scripts SQL
+      - ./db/data:/var/lib/postgresql/data  # Persistencia de datos
+    ports:
+      - "5433:5432"  # Exponer el puerto de la base de datos
