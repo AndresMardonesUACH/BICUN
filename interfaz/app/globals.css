@@ -1,8 +1,13 @@
+body{
+  margin: 0;
+}
+
 .div-main{
   margin: 1rem;
   padding: 1rem;
   background-color:antiquewhite;
   border-radius: 1rem;
+  color: black;
 }
 
 .form-input{
@@ -10,5 +15,5 @@
   padding: .5rem;
   border-radius: 10px;
   width: 250px;
-  color: black;
+  color: white;
 }

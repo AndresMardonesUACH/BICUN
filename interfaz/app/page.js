@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 
 function FileUploader() {
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
     const [publicaciones, setPublicaciones] = useState([]);
     const [title, setTitle] = useState('');
     const [user, setUser] = useState('');
@@ -12,7 +12,7 @@ function FileUploader() {
     
     
     const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
+        setSelectedFiles((prevFiles) => [...prevFiles, e.target.files[0]]);
     };
 
     function handleSelect(id) {
@@ -27,9 +27,16 @@ function FileUploader() {
         }
     }
 
+    const downloadFile = async (id) => {
+        const response = await fetch(`http://localhost:5000/archivos?id_archivo=${id}`);
+        const data = await response.json();
+    }
+
     const uploadFile = async () => {
         const formData = new FormData();
-        formData.append('file', selectedFile);
+        selectedFiles.forEach((file) => {
+            formData.append('file', file);
+        });
         formData.append('title', title);
         formData.append('user', user);
         formData.append('type', type);
@@ -59,7 +66,6 @@ function FileUploader() {
     useEffect(() => {
         fetchPublicaciones()
         fetchTipos()
-        console.log(publicaciones)
     }, [])
 
     return (
@@ -77,10 +83,19 @@ function FileUploader() {
                 <input type="file" onChange={handleFileChange} />
                 <button onClick={uploadFile}>Upload File</button>
 
-                <h2>Uploaded Files:</h2>
+                <h2>Uploaded Posts:</h2>
                 <ul>
-                    {publicaciones.map((post) => (
-                        <li key={post.id}>{post.titulo}</li>
+                    {publicaciones.map((post, index) => (
+                        <div key={index}>
+                        <li key={post.id}>{post.titulo} {post.descripcion} </li>
+                        {post.archivos.map((x, index) => (<li key={index}>{x.name}<button onClick={() => downloadFile(post.id)}>Descargar</button></li>))}
+                        </div>
+                    ))}
+                </ul>
+                <h2>Selected Files:</h2>
+                <ul>
+                    {selectedFiles.map((file, index) => (
+                        <li key={index}>{file.name}</li>
                     ))}
                 </ul>
             </div>

@@ -1,0 +1,29 @@
+.divAsignatura{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: white;
+    width: 19vw;
+    margin: 1vw 1.5vw 0 0;
+    border-radius: 0.5em;
+    border: 4px solid;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.divAsignatura:hover{
+    box-shadow: 0px 6px 5px 2px rgba(209,202,209,1);
+}
+
+.divAsignatura_info{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: white;
+    margin: 1vw 0 .8vw .8vw;
+}
+
+.divAsignatura_block{
+    height: 10vh;
+    background-color: #4a7c59;
+}

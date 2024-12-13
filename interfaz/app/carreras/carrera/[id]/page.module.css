@@ -1,0 +1,63 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    background-color: #4a7c59;
+    width: 100%;
+    height: 8vh;
+}
+
+.main{
+    background-color: white;
+    color: black;
+}
+
+.mainTitle{
+    display: inline;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-left: 1vw;
+    color: black;
+}
+
+.subTitle{
+    display: inline;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    margin-left: .5vw;
+    color: #c8d5b9;
+    font-size: 1.7rem;
+    font-weight: bold;
+    margin-top: 1.2vh;
+    align-self: center;
+}
+
+.user{
+    font-size: 1.4rem;
+    color: black;
+    margin-left: 70vw;
+    margin-top: 1.5vh;
+}
+
+.carreraTitle{
+    font-size: 3rem;
+    font-weight: bold;
+    margin-left: 4vw;
+}
+
+.main{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 92vh;
+    padding-top: 2vh;
+}
+
+.divAsignaturas{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+

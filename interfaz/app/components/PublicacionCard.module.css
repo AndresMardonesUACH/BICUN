@@ -1,0 +1,58 @@
+.divPublicacion{
+    display: flex;
+    flex-direction: column;
+    margin: 1vw;
+    border-radius: 1vw;
+    width: 65vw;
+    border: 4px solid;
+}
+
+.divPublicacionHeader{
+    padding: 1vw;
+}
+
+.divPublicacionFiles{
+    padding: 1vw;
+}
+
+.divPublicacionTitle{
+    font-weight: bold;
+}
+
+.divFilesList{
+    display: flex;
+    flex-direction: row;
+    --sb-track-color: #232E33;
+    --sb-thumb-color: #948d8d;
+    --sb-size: 0px;
+}
+
+.divFilesList::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.divFilesList::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 3px;
+}
+
+.divFilesList::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+}
+
+.divFile{
+    display: flex;
+    flex-direction: row;
+    border: 2px solid;
+    margin: 1vw 0vw 2vh 0.5vw;
+    padding: 1vh 2vw 1vh 2vw;
+    border-radius: .5vw;
+    align-items: center;
+    transition: background 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.divFileName{
+    margin-left: 1vw;
+}

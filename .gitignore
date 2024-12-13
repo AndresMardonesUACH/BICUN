@@ -1,3 +1,4 @@
 interfaz/node_modules/
 interfaz/.next/
 api/credentials.json
+persistenciaDatos/credentials.json

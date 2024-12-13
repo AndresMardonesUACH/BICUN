@@ -1,0 +1,68 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    background-color: #4a7c59;
+    width: 100%;
+    height: 8vh;
+}
+
+.mainTitle{
+    display: inline;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-left: 1vw;
+    color: black;
+}
+
+.subTitle{
+    display: inline;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    font-size: 1.7rem;
+    font-weight: bold;
+    margin-top: 1.2vh;
+    align-content: center;
+    margin: auto;
+}
+
+.user{
+    font-size: 1.4rem;
+    margin-right: 3.5vw;
+    align-self: center;
+}
+
+.main{
+    display: flex;
+    flex-direction: row;
+}
+
+.divEtiquetas{
+    display: flex;
+    flex-direction: column;
+    margin: 3vw 5vw 1vw 3vw;
+    border-radius: 1vw;
+    padding: 2vw 10vw 2vw 2vw;
+    height: 100%;
+}
+
+.divEtiquetasTitle{
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 2vh;
+}
+
+.divPublicaciones{
+    display: flex;
+    flex-direction: column;
+}
+
+.divPublicacionesButton{
+    position: fixed;
+    margin-top: 70vh;
+    margin-left: 12vh;
+    padding: 5vh 2vw 5vh 2vw;
+    border-radius: 5rem;
+}
+

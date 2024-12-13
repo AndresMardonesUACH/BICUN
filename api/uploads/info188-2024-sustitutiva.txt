@@ -1,0 +1,26 @@
+-- PRUEBA SUSTITUTIVA INFO188
+-- 11 Diciembre 2024
+-- Tiempo: 120mins
+-- Entrega:
+            - Subir archivo <nombre-apellido>.zip a la tarea 'sustitutiva' de SiveducMD
+            - El zip debe tener una carpeta con su nombre, y dentro un archivo con los fuentes
+            - El Makefile debe compilar ambos programas.
+
+-- ***************************************************************************************
+-- INSTRUCCIONES:
+--      - Toda funcion relevante debe ir explicada en comentarios.
+--      - Puede escribir funciones auxiliares para ayudar a organizar su codigo
+-- ***************************************************************************************
+
+1)  (3pts) PREGUNTA HASKELL:
+    Dada una lista de 'n 'puntos en el espacio 3D de la forma [(x1, y1, z1), (x2, y2, z2), ..., (xn, yn, zn)],
+    Escribir una funcion llamada `knnPoints` que recibe una lista de puntos, un entero k, y retorna una lista
+    donde el i-esimo elemento es una lista de los `k` puntos mas cercanos.
+
+1)  (3pts) PREGUNTA GPU
+    Hacer un programa en CUDA que genera una matriz 4D (aplanada en memoria) de dimension (n x n x n x n)
+    y calcula en paralelo la proyeccion a 3D, la cual consiste en la reduccion de la cuarta dimension
+    mediante la suma, es decir, sumar todos los cubos que conforman la matriz 4D. El programa debe reportar
+    los tiempos de ejecucion del kernel.
+
+
