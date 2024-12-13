@@ -16,13 +16,6 @@ import {
   ProgressCircleRoot,
 } from "@/components/ui/progress-circle";
 
-function buscaInfo(data, id) {
-  for (const i of data) {
-    if (i.id == id) {
-      return i;
-    }
-  }
-}
 
 function Asignatura() {
   const { id } = useParams();
