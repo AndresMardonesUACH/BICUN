@@ -52,7 +52,7 @@ function FileUploader() {
     };
 
     const fetchPublicaciones = async () => {
-        const response = await fetch('http://localhost:5000/publicaciones?asignatura=3');
+        const response = await fetch('http://localhost:5000/publicaciones/1');
         const data = await response.json();
         setPublicaciones(data);
     };

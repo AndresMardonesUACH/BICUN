@@ -202,42 +202,61 @@ def obtenerPublicacionesAsignatura(asignatura:str):
     try:
         # Consulta para obtener publicaciones filtradas por asignatura
         cursor.execute("""
-            SELECT p.id, p.titulo, p.descripcion, p.fecha_publicacion, p.id_usuario, p.id_estado, p.id_tipo, a.nombre AS archivo_nombre, a.id_drive
-            FROM publicacion p
-            JOIN archivo a 
-            ON p.id = a.id_publicacion
-            WHERE p.id_asignatura = %s;
+            SELECT a.id, a.nombre, c.color_1, c.color_2, c.color_3, p.id, p.titulo, p.descripcion, p.fecha_publicacion, u.nombre, p.id_estado, p.id_tipo, ar.nombre AS archivo_nombre, ar.id_drive
+            FROM asignatura a
+            LEFT JOIN publicacion p
+            ON a.id = p.id_asignatura
+            JOIN colores c
+            ON a.id_paleta = c.id
+            LEFT JOIN archivo ar
+            ON p.id = ar.id_publicacion
+            LEFT JOIN usuario u
+            ON p.id_usuario = u.id
+            WHERE a.id = %s;
         """, (asignatura,))
 
         # Obtener los resultados
-        archivos = cursor.fetchall()
+        publicaciones = cursor.fetchall()
 
         # Formatear los resultados en una lista de diccionarios
         resultados = []
-        publicaciones = {}
-        for row in archivos:
-            (pub_id, titulo, descripcion, fecha_publicacion, id_usuario,
+        asignaturas = {}
+        for row in publicaciones:
+            (asi_id, asi_nombre, color_1, color_2, color_3, pub_id, titulo, descripcion, fecha_publicacion, id_usuario,
              id_estado, id_tipo, archivo_nombre, id_drive) = row
-            if pub_id not in publicaciones:
-                publicaciones[pub_id] = {
+            if asi_id not in asignaturas:
+                asignaturas[asi_id] = {
+                    'id': asi_id,
+                    'nombre': asi_nombre,
+                    'color_1': color_1,
+                    'color_2': color_2,
+                    'color_3': color_3,
+                    'publicaciones': []
+                }
+
+            # Añadir la publicación a la lista de publicaciones de la asignatura
+            if (pub_id != None):
+                asignaturas[asi_id]['publicaciones'].append({
                     'id': pub_id,
                     'titulo': titulo,
                     'descripcion': descripcion,
-                    'fecha_publicacion': fecha_publicacion.isoformat(),  # Convertir a string ISO
+                    'fecha_publicacion': fecha_publicacion.isoformat() if fecha_publicacion != None  else None,  # Convertir a string ISO
                     'estado': id_estado,
                     'publicador': id_usuario,
                     'tipo_publicacion': id_tipo,
                     'archivos': []
-                }
+                })
 
             # Añadir el archivo a la lista de archivos de la publicación
-            publicaciones[pub_id]['archivos'].append({
-                'id_drive': id_drive,
-                'name': archivo_nombre
-            })
+
+            if (len(asignaturas[asi_id]['publicaciones']) != 0): 
+                asignaturas[asi_id]['publicaciones'][pub_id-1]['archivos'].append({
+                    'id_drive': id_drive,
+                    'name': archivo_nombre
+                })
 
         # Convertir el diccionario a una lista
-        resultados = list(publicaciones.values())
+        resultados = list(asignaturas.values())
 
         # Resultados: [{id:1, titulo:a, descripcion:a, fecha_publicacion:x, estado:x, publicador:x, tipo_publicacion:x, archivos: [ {id_drive:1, name:x}, {id_drive:2, name:xy}, ...}], {...}, ...]
         return resultados

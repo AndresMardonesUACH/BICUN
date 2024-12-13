@@ -90,17 +90,14 @@ def upload_files():
 
 # --------------------------------------------------------------------------------------------
 
-@app.route('/publicaciones', methods=['GET'])
-def list_files():
-    asignatura = request.args.get('asignatura', default=0)
-
+@app.route('/publicaciones/<asignatura>', methods=['GET'])
+def list_files(asignatura):
     try:
         result = subprocess.run(
             ['python', '../persistenciaDatos/persistencia_datos.py', 'getPublicaciones', asignatura], 
             stdout=subprocess.PIPE, 
             text=True
         )
-        print(result)
         response = jsonify(json.loads(result.stdout))
         return response
     except Exception as e:

@@ -12,9 +12,9 @@ export default function PublicacionCard(props) {
         className={styles.divPublicacionHeader}
         style={{ backgroundColor: color }}
       >
-        <p className={styles.divPublicacionTitle}>{x.nombre}</p>
+        <p className={styles.divPublicacionTitle}>{x.titulo}</p>
         <p className={styles.divPublicacionAuthor}>Usuario: {x.publicador}</p>
-        <p className={styles.divPublicacionDate}>Fecha: {x.fecha}</p>
+        <p className={styles.divPublicacionDate}>Fecha: {x.fecha_publicacion}</p>
       </div>
 
       <div className={styles.divPublicacionFiles}>
@@ -32,7 +32,7 @@ export default function PublicacionCard(props) {
               style={{ hover: { backgroundColor: color } }}
             >
               <FaFileDownload />
-              <p className={styles.divFileName}>{y.nombre}</p>
+              <p className={styles.divFileName}>{y.name}</p>
             </div>
           ))}
         </div>
