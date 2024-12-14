@@ -20,6 +20,7 @@ import {
 function Asignatura() {
   const { id } = useParams();
   const [publicacionesList, setPublicacionesList] = useState([]);
+  const [tipos, setTipos] = useState([]);
 
   const id_list = id.split("-");
 
@@ -28,15 +29,22 @@ function Asignatura() {
       `http://localhost:5000/publicaciones/${id_list[1]}`
     );
     const data = await response.json();
-    console.log(data);
     setPublicacionesList(data);
+  };
+
+  const fetchTipos = async () => {
+    const response = await fetch(
+      `http://localhost:5000/tiposPublicaciones`
+    );
+    const data = await response.json();
+    setTipos(data);
   };
 
   useEffect(() => {
     fetchPublicaciones();
+    fetchTipos();
   }, []);
 
-  const tiposPublicaciones = ["Examen", "Guia", "Libro", "Otro"];
   return (
     <div style={{ backgroundColor: "white", color: "black" }}>
       <header
@@ -74,16 +82,16 @@ function Asignatura() {
               style={{ backgroundColor: publicacionesList[0].color_2 }}
             >
               <p className={styles.divEtiquetasTitle}>Etiquetas</p>
-              {tiposPublicaciones.map((x, index) => (
+              {tipos.length > 0 ? tipos.map((x, index) => (
                 <Checkbox
                   colorPalette={"gray"}
                   variant={"subtle"}
                   margin={"1vw"}
                   key={index}
                 >
-                  {x}
+                  {x.nombre}
                 </Checkbox>
-              ))}
+              )) : (<>Cargando tipos</>)}
             </div>
 
             <Button

@@ -3,6 +3,13 @@ import { FaFileDownload } from "react-icons/fa";
 
 export default function PublicacionCard(props) {
   const { x, color } = props;
+
+  const downloadFile = async (fileId, fileName) => { // NUEVO
+    // pasar id y nombre del archivo a la ruta de descarga
+    window.location.href = `http://localhost:5000/archivo/${fileId}/${fileName}`;
+    console.log(window.location.href)
+  };
+
   return (
     <div
       className={styles.divPublicacion}
@@ -30,6 +37,7 @@ export default function PublicacionCard(props) {
               className={styles.divFile}
               key={index}
               style={{ hover: { backgroundColor: color } }}
+              onClick={() => downloadFile(y.id_drive, y.name)}
             >
               <FaFileDownload />
               <p className={styles.divFileName}>{y.name}</p>

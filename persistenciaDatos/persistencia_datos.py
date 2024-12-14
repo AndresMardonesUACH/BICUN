@@ -13,7 +13,6 @@ from googleapiclient.http import MediaIoBaseDownload
 from werkzeug.utils import secure_filename
 import json
 import os
-
 import io
 
 # Configuración de Google Drive API
@@ -91,41 +90,33 @@ def disconnect(connection):
         # print("PostgreSQL connection is closed")
 
 
-def descargarArchivo(id_drive: str, output_path: str) -> None:
-    """Descargar un archivo de Google Drive.
-    Args:
-        id_drive: ID del archivo en Google Drive.
-        output_path: Ruta donde se guardará el archivo descargado.
-    """
-
-    service = get_drive_service()
-
-    # Obtener el nombre del archivo
+def descargarArchivo(file_id):
     try:
-        file_metadata = service.files().get(fileId=id_drive, fields="name").execute()
-        default_name = file_metadata['name']
-    except Exception as e:
-        print(f"Error al obtener el nombre del archivo: {e}")
-        return
+        service = get_drive_service()
 
-    # Descargar el archivo desde Google Drive
-    try:
-        request = service.files().get_media(fileId=id_drive)
-        fh = io.BytesIO()  # Crear un buffer para almacenar los datos
-        downloader = MediaIoBaseDownload(fh, request)
+        # Paso 2: Obtener metadatos del archivo (incluido el nombre)
+        metadata = service.files().get(fileId=file_id, fields="name").execute()
+        file_name = metadata.get("name")
+        if not file_name:
+            return "Error: No se pudo obtener el nombre del archivo."
+
+        # Paso 3: Preparar la solicitud para descargar el archivo
+        request = service.files().get_media(fileId=file_id)
+        file_stream = io.BytesIO()
+        downloader = MediaIoBaseDownload(file_stream, request)
+
+        # Paso 4: Descargar el archivo en chunks
         done = False
-
         while not done:
             _, done = downloader.next_chunk()
 
-        output_path = os.path.join(output_path, default_name)
-        # Guardar los datos descargados en el archivo seleccionado por el usuario
-        with open(output_path, 'wb') as f:
-            f.write(fh.getvalue())
-
-
+        # Paso 5: Guardar el contenido descargado localmente en la carpeta ../interfaz/Public/downloads
+        new_file_path = "../interfaz/public/downloads/" + secure_filename(file_name)
+        with open(new_file_path, "wb") as f:
+            f.write(file_stream.getvalue())
+        return f"Archivo descargado: {file_name}"
     except Exception as e:
-        print(f"Error al descargar el archivo: {e}")
+        return f"Error al descargar el archivo: {e}"
         
 
 def insertarPublicacion(titulo: str, descripcion: str, fecha: str, estado: str, publicador: str, tipo_publicacion: str, asignatura: str, drives_name: list) -> None:
@@ -440,9 +431,8 @@ def handler(modo: str, argumentos: str):
     elif modo == "getAsignaturas":
         return obtenerAsignaturas(argumentos)
     
-    elif modo == "descargar":
-        argumentos = argumentos.split(";")
-        descargarArchivo(argumentos[0], argumentos[1])
+    elif modo == "downloadArchivo":
+        descargarArchivo(argumentos)
         
     else:
         print("Error: modo incorrecto")

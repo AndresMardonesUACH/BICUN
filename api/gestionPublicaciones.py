@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, after_this_request
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -6,6 +6,7 @@ import subprocess
 import os
 import json
 import mimetypes
+import time
 
 
 app = Flask(__name__)
@@ -16,40 +17,31 @@ CORS(app)
 
 # --------------------------------------------------------------------------------------------
 
-@app.route('/archivos/<file_id>/<file_name>', methods=['GET'])
-def download_file(file_id, file_name):
+# NUEVO --------------------------------------------------------------------------------------------
+@app.route('/archivo/<file_id>/<file_name>', methods=['GET'])
+def handle_download(file_id, file_name):
+    if not file_id:
+        return jsonify({'error': 'Se requiere el parámetro file_id'}), 400
+
     try:
-        # Define ruta temporal para almacenar el archivo
-        temp_path = "./download/"
+        comando = f"python ../persistenciaDatos/persistencia_datos.py downloadArchivo {file_id}"
+        os.system(comando)
+        ruta = f'../interfaz/public/downloads/{file_name}'
+        @after_this_request
+        def borrar_archivo(response):
+            try:    
+                os.remove(ruta)
+                print(f"Archivo {ruta} eliminado después de la descarga.")
+            except Exception as e:
+                print(f"Error al eliminar el archivo: {e}")
+            return response
+        
 
-        # Ejecuta el script de persistencia
-        command = f"python3 persistencia_datos.py {file_id};{temp_path}"
-        result = os.system(command)
-        temp_path += file_name
+        return send_file(ruta, as_attachment=True)
 
-        # Verifica si el comando se ejecutó correctamente
-        if result != 0:
-            return {"error": "Error al ejecutar la persistencia"}, 500
-
-        # Envía el archivo al cliente
-
-
-        file_path = "archivo.pdf"
-        mime_type, encoding = mimetypes.guess_type(file_path)
-
-        return send_file(
-            temp_path,
-            as_attachment=True,
-            download_name= file_name,
-            mimetype=mime_type
-        )   
     except Exception as e:
-        return {"error": str(e)}, 500
-    finally:
-        # Limpia el archivo temporal
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
-
+        return jsonify({'error': str(e)}), 500
+    
 # --------------------------------------------------------------------------------------------
 
 @app.route('/publicacion', methods=['POST'])
