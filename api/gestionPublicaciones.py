@@ -61,7 +61,7 @@ def upload_files():
 
     # Servicio de Google Drive
     try:
-        comando = f"python ../persistenciaDatos/persistencia_datos.py insertar {tituloPost};desc;{str(datetime.timestamp(datetime.now()))};{estadoPost};{publicador};{tipoPost};{asignaturaPost};"
+        comando = f"python ../persistenciaDatos/persistencia_datos.py insertar {tituloPost}\;desc\;{str(datetime.timestamp(datetime.now()))}\;{estadoPost}\;{publicador}\;{tipoPost}\;{asignaturaPost}\;"
         for file in files:
             filename = secure_filename(file.filename)
             filepath = os.path.join('uploads', filename)
@@ -74,6 +74,18 @@ def upload_files():
                 comando += ","
 
         os.system(comando)
+
+        @after_this_request
+        def borrar_archivos(response):
+            try:
+                for file in files:
+                    filename = secure_filename(file.filename)
+                    filepath = os.path.join('uploads', filename)
+                    os.remove(filepath)
+                    print(f"Archivo {filepath} eliminado después de la subida.")
+            except Exception as e:
+                print(f"Error al eliminar los archivos: {e}")
+            return response
 
         return jsonify({'message': 'Archivos subidos exitosamente'}), 200
     except Exception as e:

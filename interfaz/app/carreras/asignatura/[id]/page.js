@@ -16,6 +16,18 @@ import {
   ProgressCircleRoot,
 } from "@/components/ui/progress-circle";
 
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 
 function Asignatura() {
   const { id } = useParams();
@@ -93,14 +105,49 @@ function Asignatura() {
                 </Checkbox>
               )) : (<>Cargando tipos</>)}
             </div>
+            <DialogRoot size={"lg"}>
+            <DialogTrigger asChild>
+              <Button
+                className={styles.divPublicacionesButton}
+                backgroundColor={publicacionesList[0].color_1}
+              >
+                <MdFileUpload />
+                Subir Publicación
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Nueva Publicación</DialogTitle>
+              </DialogHeader>
+              <DialogBody>
+                <p>Titulo de publicación</p>
+                <input type="text" placeholder="Título" />
+                <p>Descripción de publicacion</p>
+                <input type="text" placeholder="Descripción" />
+                <p> tipo de publicación</p>
+                <select>
+                  {tipos.map((x, index) => (
+                    <option key={index} value={x.id}>
+                      {x.nombre}
+                    </option>
+                  ))}
+                </select>
+                <p>Archivos a subir</p>
+                <input type="file" />
 
-            <Button
-              className={styles.divPublicacionesButton}
-              backgroundColor={publicacionesList[0].color_1}
-            >
-              <MdFileUpload />
-              Subir Publicación
-            </Button>
+                
+
+
+              </DialogBody>
+              <DialogFooter>
+                <DialogActionTrigger asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DialogActionTrigger>
+                <Button>Save</Button>
+              </DialogFooter>
+              <DialogCloseTrigger />
+            </DialogContent>
+          </DialogRoot>
             <div className={styles.divPublicaciones}>
               {publicacionesList[0].publicaciones.map((x, index) => (
                 <PublicacionCard

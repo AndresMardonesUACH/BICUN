@@ -70,7 +70,7 @@ def conectar():
     """
     try:
         connection = psycopg2.connect(user="postgres",
-                                      password="admin",
+                                      password="123456",
                                       host="localhost",
                                         database="arqui")
         return connection
@@ -239,15 +239,19 @@ def obtenerPublicacionesAsignatura(asignatura:str):
                 })
 
             # Añadir el archivo a la lista de archivos de la publicación
-
+            pub_aux = {}
+            i =0
             if (len(asignaturas[asi_id]['publicaciones']) != 0): 
-                asignaturas[asi_id]['publicaciones'][pub_id-1]['archivos'].append({
+                if pub_id not in pub_aux:
+                    pub_aux[pub_id]= i
+                    i+=1
+                asignaturas[asi_id]['publicaciones'][pub_aux[pub_id]]['archivos'].append({
                     'id_drive': id_drive,
                     'name': archivo_nombre
                 })
 
         # Convertir el diccionario a una lista
-        resultados = list(asignaturas.values())
+        resultados = list(asignaturas.values())  
 
         # Resultados: [{id:1, titulo:a, descripcion:a, fecha_publicacion:x, estado:x, publicador:x, tipo_publicacion:x, archivos: [ {id_drive:1, name:x}, {id_drive:2, name:xy}, ...}], {...}, ...]
         return resultados

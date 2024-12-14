@@ -27,10 +27,6 @@ function FileUploader() {
         }
     }
 
-    const downloadFile = async (id) => {
-        const response = await fetch(`http://localhost:5000/archivos?id_archivo=${id}`);
-        const data = await response.json();
-    }
 
     const uploadFile = async () => {
         const formData = new FormData();
@@ -88,7 +84,7 @@ function FileUploader() {
                     {publicaciones.map((post, index) => (
                         <div key={index}>
                         <li key={post.id}>{post.titulo} {post.descripcion} </li>
-                        {post.archivos.map((x, index) => (<li key={index}>{x.name}<button onClick={() => downloadFile(post.id)}>Descargar</button></li>))}
+                        {post.archivos != null? post.archivos.map((x, index) => (<li key={index}>{x.name}</li>)): <></>}
                         </div>
                     ))}
                 </ul>
