@@ -12,7 +12,7 @@ import time
 app = Flask(__name__)
 CORS(app)
 
-#python gestionPublicaciones.py -m flask
+#python3 gestionPublicaciones.py -m flask
 
 
 # --------------------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ def handle_download(file_id, file_name):
         return jsonify({'error': 'Se requiere el parámetro file_id'}), 400
 
     try:
-        comando = f"python ../persistenciaDatos/persistencia_datos.py downloadArchivo {file_id}"
+        comando = f"python3 ../persistenciaDatos/persistencia_datos.py downloadArchivo {file_id}"
         os.system(comando)
         ruta = f'../interfaz/public/downloads/{file_name}'
         @after_this_request
@@ -62,7 +62,7 @@ def upload_files():
 
     # Servicio de Google Drive
     try:
-        #comando = f"python ../persistenciaDatos/persistencia_datos.py insertar {tituloPost}\;desc\;{str(datetime.timestamp(datetime.now()))}\;{estadoPost}\;{publicador}\;{tipoPost}\;{asignaturaPost}\;" # LINUX
+        #comando = f"python3 ../persistenciaDatos/persistencia_datos.py insertar {tituloPost}\;desc\;{str(datetime.timestamp(datetime.now()))}\;{estadoPost}\;{publicador}\;{tipoPost}\;{asignaturaPost}\;" # LINUX
         comando = f"{tituloPost},{descripcion},{str(datetime.timestamp(datetime.now()))},{estadoPost},{publicador},{tipoPost},{asignaturaPost}," # #WINDOWS
         for file in files:
             filename = secure_filename(file.filename)
@@ -76,7 +76,7 @@ def upload_files():
                 comando += "/"
             print(comando)
         result = subprocess.run(
-            ['python', '../persistenciaDatos/persistencia_datos.py', 'insertar', comando], 
+            ['python3', '../persistenciaDatos/persistencia_datos.py', 'insertar', comando], 
             stdout=subprocess.PIPE, 
             text=True
         )               
@@ -104,7 +104,7 @@ def upload_files():
 def list_posts(asignatura):
     try:
         result = subprocess.run(
-            ['python', '../persistenciaDatos/persistencia_datos.py', 'getPublicaciones', asignatura], 
+            ['python3', '../persistenciaDatos/persistencia_datos.py', 'getPublicaciones', asignatura], 
             stdout=subprocess.PIPE, 
             text=True
         )
@@ -118,7 +118,7 @@ def list_posts(asignatura):
 @app.route('/tiposPublicaciones', methods=['GET'])
 def list_types():
     result = subprocess.run(
-        ['python', '../persistenciaDatos/persistencia_datos.py', 'getTipos'], 
+        ['python3', '../persistenciaDatos/persistencia_datos.py', 'getTipos'], 
         stdout=subprocess.PIPE, 
         text=True
     )
@@ -131,10 +131,11 @@ def list_types():
 def list_carreras():
     try:
         result = subprocess.run(
-            ['python', '../persistenciaDatos/persistencia_datos.py', 'getCarreras'], 
+            ['python3', '../persistenciaDatos/persistencia_datos.py', 'getCarreras'], 
             stdout=subprocess.PIPE, 
             text=True
         )
+        print (result)
         response = jsonify(json.loads(result.stdout))
         return response
     except Exception as e:
@@ -147,7 +148,7 @@ def list_carreras():
 def list_asignaturas(id_carrera):
     try:
         result = subprocess.run(
-            ['python', '../persistenciaDatos/persistencia_datos.py', 'getAsignaturas', id_carrera], 
+            ['python3', '../persistenciaDatos/persistencia_datos.py', 'getAsignaturas', id_carrera], 
             stdout=subprocess.PIPE, 
             text=True
         )
