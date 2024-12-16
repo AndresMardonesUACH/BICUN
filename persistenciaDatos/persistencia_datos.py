@@ -70,9 +70,9 @@ def conectar():
     """
     try:
         connection = psycopg2.connect(user="postgres",
-                                      password="admin",
+                                      password="123456",
                                       host="localhost",
-                                        database="arqui")
+                                        database="BICUN")
         return connection
     except (Exception, Error) as error:
         print("Error while connecting to PostgreSQL", error)
