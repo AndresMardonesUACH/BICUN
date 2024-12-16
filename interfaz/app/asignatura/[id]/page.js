@@ -74,11 +74,11 @@ function Asignatura() {
       </header>
 
       <BreadcrumbRoot marginLeft={"2rem"} marginTop={"2vh"}>
-        <BreadcrumbLink href="/carreras" color={"black"}>
+        <BreadcrumbLink href="/" color={"black"}>
           Carreras
         </BreadcrumbLink>
         <BreadcrumbLink
-          href={`/carreras/carrera/${id_list[0]}`}
+          href={`/carrera/${id_list[0]}`}
           color={"black"}
         >
           Asignaturas

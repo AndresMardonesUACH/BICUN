@@ -1,102 +1,86 @@
-"use client"
-import { useState, useEffect } from 'react';
+"use client";
+import styles from "./page.module.css";
+import { Input } from "@chakra-ui/react";
+import { InputGroup } from "@/components/ui/input-group";
+import { LuSearch } from "react-icons/lu";
+import { IoMdAddCircle } from "react-icons/io";
+import AsignaturaCard from "@/app/components/AsignaturaCard";
+import "./globals.css";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import {
+  ProgressCircleRing,
+  ProgressCircleRoot,
+} from "@/components/ui/progress-circle";
 
-function FileUploader() {
-    const [selectedFiles, setSelectedFiles] = useState([]);
-    const [publicaciones, setPublicaciones] = useState([]);
-    const [title, setTitle] = useState('');
-    const [user, setUser] = useState('');
-    const [type, setType] = useState('');
-    const [tipos, setTipos] = useState([]);
-    const [asignatura, setAsignatura] = useState('');
-    
-    
-    const handleFileChange = (e) => {
-        setSelectedFiles((prevFiles) => [...prevFiles, e.target.files[0]]);
-    };
+function HomeCarreras() {
+  const [carreras, setCarreras] = useState([]);
 
-    function handleSelect(id) {
-        var select = document.getElementById(id);
-        var valor = select.options[select.selectedIndex].value;
-        if (valor != "") {
-            switch (id) {
-                case "type":
-                    setType(valor)
-                    break
-            }
-        }
-    }
+  const fetchCarreras = async () => {
+    const response = await fetch("http://localhost:5000/carreras");
+    const data = await response.json();
+    setCarreras(data);
+  };
 
+  useEffect(() => {
+    fetchCarreras();
+  }, []);
 
-    const uploadFile = async () => {
-        const formData = new FormData();
-        selectedFiles.forEach((file) => {
-            formData.append('file', file);
-        });
-        formData.append('title', title);
-        formData.append('user', user);
-        formData.append('type', type);
-        formData.append('asignatura', asignatura);
+  return (
+    <div>
+      <header className={styles.header}>
+        <p className={styles.mainTitle}>BICUN</p>
+        <p className={styles.subTitle}>Carreras</p>
+        <InputGroup
+          startElement={<LuSearch color="black" />}
+          className={styles.searchBar}
+        >
+          <Input
+            placeholder="Buscar carrera"
+            colorScheme={"red"}
+            rounded={"full"}
+            _placeholder={{ color: "#c8d5b9", fontWeight: "bold" }}
+          />
+        </InputGroup>
+        <p className={styles.user}>Usuario</p>
+      </header>
 
-        const response = await fetch('http://localhost:5000/publicacion', {
-            method: 'POST',
-            body: formData,
-        });
-        const data = await response.json();
-        console.log('File uploaded:', data);
-        fetchPublicaciones();  // Update file list after upload
-    };
+      <main className={styles.main}>
+        {carreras.length > 0 ? (
+          carreras.map((carrera, index) => (
+            <div className={styles.divCarrera} key={index}>
+              <Link href={`/carrera/${carrera.id}`}>
+                <p className={styles.carreraTitle}>{carrera.nombre}</p>
+              </Link>
 
-    const fetchPublicaciones = async () => {
-        const response = await fetch('http://localhost:5000/publicaciones/1');
-        const data = await response.json();
-        setPublicaciones(data);
-    };
-
-    const fetchTipos = async () => {
-        const response = await fetch('http://localhost:5000/tiposPublicaciones');
-        const data = await response.json();
-        setTipos(data);
-    };
-
-    useEffect(() => {
-        fetchPublicaciones()
-        fetchTipos()
-    }, [])
-
-    return (
-        <div className='div-main'>
-            <div className='div-form'>
-                <input required type="text" name='title' id='title' placeholder='Título' className="form-input" onChange={(e) => setTitle(e.target.value)} value={title} />
-                <input required type="text" name='user' id='user' placeholder='Usuario' className="form-input" onChange={(e) => setUser(e.target.value)} value={user} />
-                <select name="type" id="type" required className="form-input" onChange={(e) => handleSelect(e.target.id)} value={type}>
-                    {tipos.map((x, index) => (
-                        <option key={index} value={x.id}>{x.nombre}</option>
-                    ))}
-                </select>
-                <input required type="text" name='asignatura' id='asignatura' placeholder='Asignatura' className="form-input" onChange={(e) => setAsignatura(e.target.value)} value={asignatura} />
-
-                <input type="file" onChange={handleFileChange} />
-                <button onClick={uploadFile}>Upload File</button>
-
-                <h2>Uploaded Posts:</h2>
-                <ul>
-                    {publicaciones.map((post, index) => (
-                        <div key={index}>
-                        <li key={post.id}>{post.titulo} {post.descripcion} </li>
-                        {post.archivos != null? post.archivos.map((x, index) => (<li key={index}>{x.name}</li>)): <></>}
-                        </div>
-                    ))}
-                </ul>
-                <h2>Selected Files:</h2>
-                <ul>
-                    {selectedFiles.map((file, index) => (
-                        <li key={index}>{file.name}</li>
-                    ))}
-                </ul>
+              <div className={styles.divAsignaturas}>
+                {carrera.asignaturas.map((asignatura, index) => (
+                  <Link
+                    key={index}
+                    href={`/asignatura/${carrera.id}-${asignatura.id}`}
+                  >
+                    <AsignaturaCard
+                      nombre={asignatura.nombre}
+                      prefijo={asignatura.prefijo}
+                      codigo={asignatura.codigo}
+                      color={asignatura.color_1}
+                    />
+                  </Link>
+                ))}
+                <Link href={`/carrera/${carrera.id}`}>
+                  <IoMdAddCircle className={styles.addButton} />
+                </Link>
+              </div>
             </div>
-        </div>
-    );
+          ))
+        ) : (
+          <ProgressCircleRoot value={null} size="lg" margin={"auto"} >
+            <ProgressCircleRing cap="round"/>
+          </ProgressCircleRoot>
+        )}
+      </main>
+    </div>
+  );
 }
 
-export default FileUploader;
+export default HomeCarreras;

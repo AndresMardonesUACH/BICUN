@@ -39,7 +39,7 @@ function Carrera() {
 
       <main className={styles.main}>
         <BreadcrumbRoot marginLeft={"2rem"} marginBottom={"1rem"}>
-          <BreadcrumbLink href="/carreras" color={"black"}>
+          <BreadcrumbLink href="/" color={"black"}>
             Carreras
           </BreadcrumbLink>
           <BreadcrumbCurrentLink color={"gray"}>
@@ -52,7 +52,7 @@ function Carrera() {
             <div className={styles.divAsignaturas}>
               {asignaturasList[0].asignaturas.map((asignatura, index) => (
                 <div style={{ marginBottom: "2rem" }} key={index}>
-                  <Link href={`/carreras/asignatura/${id}-${asignatura.id}`}>
+                  <Link href={`/asignatura/${id}-${asignatura.id}`}>
                     <AsignaturaCard
                       nombre={asignatura.nombre}
                       prefijo={asignatura.prefijo}
