@@ -9,31 +9,29 @@ import {
   BreadcrumbLink,
   BreadcrumbRoot,
 } from "@/components/ui/breadcrumb";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import PublicacionCard from "@/app/components/PublicacionCard";
 import {
   ProgressCircleRing,
   ProgressCircleRoot,
 } from "@/components/ui/progress-circle";
-
 import {
-  DialogActionTrigger,
-  DialogBody,
   DialogCloseTrigger,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogRoot,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-
+} from "@/components/ui/dialog";
+import { Toaster } from "@/components/ui/toaster"
+import SubirPublicacionCard from "@/app/components/SubirPublicacionCard";
 
 function Asignatura() {
   const { id } = useParams();
   const [publicacionesList, setPublicacionesList] = useState([]);
   const [tipos, setTipos] = useState([]);
-
+  const [open, setOpen] = useState(false)
+  
   const id_list = id.split("-");
 
   const fetchPublicaciones = async () => {
@@ -45,9 +43,7 @@ function Asignatura() {
   };
 
   const fetchTipos = async () => {
-    const response = await fetch(
-      `http://localhost:5000/tiposPublicaciones`
-    );
+    const response = await fetch(`http://localhost:5000/tiposPublicaciones`);
     const data = await response.json();
     setTipos(data);
   };
@@ -59,12 +55,21 @@ function Asignatura() {
 
   return (
     <div style={{ backgroundColor: "white", color: "black" }}>
+
+      {/* HEADER */}
       <header
         className={styles.header}
-        style={{ backgroundColor: publicacionesList.length > 0 ? publicacionesList[0].color_1 : "#ffffff" }}
+        style={{
+          backgroundColor:
+            publicacionesList.length > 0
+              ? publicacionesList[0].color_1
+              : "#ffffff",
+        }}
       >
         <p className={styles.mainTitle}>BICUN</p>
-        <p className={styles.subTitle}>{publicacionesList.length > 0 ? publicacionesList[0].nombre: ""}</p>
+        <p className={styles.subTitle}>
+          {publicacionesList.length > 0 ? publicacionesList[0].nombre : ""}
+        </p>
         <p className={styles.user}>Usuario</p>
       </header>
 
@@ -79,7 +84,7 @@ function Asignatura() {
           Asignaturas
         </BreadcrumbLink>
         <BreadcrumbCurrentLink color={"gray"}>
-          {publicacionesList.length > 0 ? publicacionesList[0].nombre: ""}
+          {publicacionesList.length > 0 ? publicacionesList[0].nombre : ""}
         </BreadcrumbCurrentLink>
       </BreadcrumbRoot>
 
@@ -89,65 +94,58 @@ function Asignatura() {
       >
         {publicacionesList.length > 0 ? (
           <>
+
+          {/* DIV ETIQUETAS */}
             <div
               className={styles.divEtiquetas}
               style={{ backgroundColor: publicacionesList[0].color_2 }}
             >
               <p className={styles.divEtiquetasTitle}>Etiquetas</p>
-              {tipos.length > 0 ? tipos.map((x, index) => (
-                <Checkbox
-                  colorPalette={"gray"}
-                  variant={"subtle"}
-                  margin={"1vw"}
-                  key={index}
-                >
-                  {x.nombre}
-                </Checkbox>
-              )) : (<>Cargando tipos</>)}
+              {tipos.length > 0 ? (
+                tipos.map((x, index) => (
+                  <Checkbox
+                    colorPalette={"gray"}
+                    variant={"subtle"}
+                    margin={"1vw"}
+                    key={index}
+                  >
+                    {x.nombre}
+                  </Checkbox>
+                ))
+              ) : (
+                <>Cargando tipos</>
+              )}
             </div>
-            <DialogRoot size={"lg"}>
-            <DialogTrigger asChild>
-              <Button
-                className={styles.divPublicacionesButton}
-                backgroundColor={publicacionesList[0].color_1}
-              >
-                <MdFileUpload />
-                Subir Publicación
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Nueva Publicación</DialogTitle>
-              </DialogHeader>
-              <DialogBody>
-                <p>Titulo de publicación</p>
-                <input type="text" placeholder="Título" />
-                <p>Descripción de publicacion</p>
-                <input type="text" placeholder="Descripción" />
-                <p> tipo de publicación</p>
-                <select>
-                  {tipos.map((x, index) => (
-                    <option key={index} value={x.id}>
-                      {x.nombre}
-                    </option>
-                  ))}
-                </select>
-                <p>Archivos a subir</p>
-                <input type="file" />
 
-                
+            {/* MODAL SUBIR PUBLICACIÓN */}
+            <DialogRoot size={"lg"} key={"center"} placement={"center"} open={open} onOpenChange={(e) => setOpen(e.open)}>
+              <DialogTrigger asChild>
+                <Button
+                  className={styles.divPublicacionesButton}
+                  backgroundColor={publicacionesList[0].color_1}
+                >
+                  <MdFileUpload />
+                  Subir Publicación
+                </Button>
+              </DialogTrigger>
+              <DialogContent backgroundColor={"white"} color={"black"}>
+                <DialogHeader>
+                  <DialogTitle
+                    fontWeight={"bold"}
+                    marginLeft={"13.7vw"}
+                    fontSize={"1.5rem"}
+                  >
+                    Nueva Publicación
+                  </DialogTitle>
+                </DialogHeader>
 
+                <SubirPublicacionCard tipos={tipos} id_list={id_list} setOpen={setOpen} color={publicacionesList[0].color_1} fetchPublicaciones={fetchPublicaciones}/>
 
-              </DialogBody>
-              <DialogFooter>
-                <DialogActionTrigger asChild>
-                  <Button variant="outline">Cancel</Button>
-                </DialogActionTrigger>
-                <Button>Save</Button>
-              </DialogFooter>
-              <DialogCloseTrigger />
-            </DialogContent>
-          </DialogRoot>
+                <DialogCloseTrigger backgroundColor={"red"} />
+              </DialogContent>
+            </DialogRoot>
+
+            {/* DIV PUBLICACIONES */}
             <div className={styles.divPublicaciones}>
               {publicacionesList[0].publicaciones.map((x, index) => (
                 <PublicacionCard
@@ -157,6 +155,8 @@ function Asignatura() {
                 />
               ))}
             </div>
+
+            <Toaster />
           </>
         ) : (
           <ProgressCircleRoot value={null} size="lg" margin={"auto"}>

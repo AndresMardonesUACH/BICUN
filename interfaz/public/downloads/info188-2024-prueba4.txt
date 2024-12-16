@@ -1,0 +1,39 @@
+-- PRUEBA 4 INFO188
+-- 3 Diciembre 2024
+-- Tiempo: 120mins
+-- Entrega:
+            - Subir archivo <nombre-apellido>.zip a la tarea 'prueba 4' de SiveducMD
+            - El zip debe tener una carpeta con su nombre, y dentro un archivo para cada pregunta
+            - El Makefile debe compilar ambos programas.
+
+-- ***************************************************************************************
+-- INSTRUCCIONES:
+--      - Toda funcion relevante debe ir explicada en comentarios.
+--      - Puede escribir funciones auxiliares para ayudar a organizar su codigo
+-- ***************************************************************************************
+
+1) (3pts) Raices paralelas
+    Sea A[] = [x1, x2, x3, x4, ...., xn] una forma simple para representar un grafo dirigido sin ciclos
+    donde A[i] corresponde al padre del nodo "i". Cuando un nodo es una raiz, A[i] = i.
+
+    Implemente un programa en paralelo eficiente con OpenMP que calcula la raiz para cada nodo del grafo.
+    Es decir, retorna un array R[] donde ahora R[i] es el nodo raiz para el nodo "i".
+
+    Por ejemplo, si A[] = [1, 2, 3, 3, 5, 6, 6, 6]
+                     i  =  0  1  2  3  4  5  6  7
+
+    Visualmente podria interpretarse como:
+    (0) --> (1) --> (2) --> (3)       (4) --> (5) --> (6) <-- (7)
+
+    Y su solucion seria R[] = [3, 3, 3, 3, 6, 6, 6, 6]
+
+    Debe ejecutarse como ./prog1 <n> <nt>
+    Donde <n> es el tamano del grafo A[] sin ciclos, y <nt> es el numero de threads escogidos.
+    AYUDA: para generar grafos dirigidos aciclicos aleatorios de forma simple, solo debes respetar que todo arco (a,b) cumpla que a < b.
+
+
+
+-- 2) (3pts) Todos los trios cercanos
+    Dada un array A[] de "n" floats generados aleatoriamente entre 0 y 1, escribir un kernel de GPU que encuentre en paralelo
+    todos los trios (i,j,k) donde D = (A[i] - A[j])^2 + (A[j] - A[k])^2 + (A[i] - A[k])^2 es menor a 0.2. Debe decidir que usar
+    para representar su salida (todos los trios). Explique bien su formulacion de la solucion y sus consideraciones que tomo.

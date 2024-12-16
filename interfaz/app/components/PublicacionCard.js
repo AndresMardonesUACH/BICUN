@@ -30,7 +30,7 @@ export default function PublicacionCard(props) {
         </p>
         <div
           className={styles.divFilesList}
-          style={{ overflowX: x.archivos.length > 4 ? "scroll" : "hidden" }}
+          style={{ overflowX: x.archivos.length >= 3 ? "scroll" : "hidden" }}
         >
           {x.archivos.map((y, index) => (
             <div

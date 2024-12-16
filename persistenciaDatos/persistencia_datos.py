@@ -70,7 +70,7 @@ def conectar():
     """
     try:
         connection = psycopg2.connect(user="postgres",
-                                      password="123456",
+                                      password="admin",
                                       host="localhost",
                                         database="arqui")
         return connection
@@ -210,6 +210,7 @@ def obtenerPublicacionesAsignatura(asignatura:str):
         publicaciones = cursor.fetchall()
 
         # Formatear los resultados en una lista de diccionarios
+        pub_aux = {}
         resultados = []
         asignaturas = {}
         for row in publicaciones:
@@ -226,7 +227,7 @@ def obtenerPublicacionesAsignatura(asignatura:str):
                 }
 
             # Añadir la publicación a la lista de publicaciones de la asignatura
-            if (pub_id != None):
+            if (pub_id != None and pub_id not in pub_aux.keys()):
                 asignaturas[asi_id]['publicaciones'].append({
                     'id': pub_id,
                     'titulo': titulo,
@@ -239,10 +240,9 @@ def obtenerPublicacionesAsignatura(asignatura:str):
                 })
 
             # Añadir el archivo a la lista de archivos de la publicación
-            pub_aux = {}
-            i =0
-            if (len(asignaturas[asi_id]['publicaciones']) != 0): 
-                if pub_id not in pub_aux:
+            i = len(asignaturas[asi_id]['publicaciones']) - 1
+            if (len(asignaturas[asi_id]['publicaciones']) != 0):
+                if pub_id not in pub_aux.keys():  
                     pub_aux[pub_id]= i
                     i+=1
                 asignaturas[asi_id]['publicaciones'][pub_aux[pub_id]]['archivos'].append({
@@ -417,9 +417,12 @@ def handler(modo: str, argumentos: str):
         modo: Modo de operación.
         argumentos: Argumentos de la operación.
     """
+    
     if modo == "insertar":
-        argumentos = argumentos.split(";") # -> [titulo, descripcion, fecha, estado, publicador, tipo_publicacion, asignatura;name1,name2,name3]
-        drives_names = argumentos[7].split(",")
+        print(argumentos)
+        argumentos = argumentos.split(",") # -> [titulo, descripcion, fecha, estado, publicador, tipo_publicacion, asignatura;name1,name2,name3]
+        print(argumentos)
+        drives_names = argumentos[7].split("/")
         timestamp = datetime.fromtimestamp(float(argumentos[2])).strftime("%Y-%m-%d %H:%M:%S")
         insertarPublicacion(argumentos[0], argumentos[1], timestamp, argumentos[3], argumentos[4], argumentos[5], argumentos[6], drives_names)
 
@@ -452,7 +455,6 @@ argumentos = ""
 
 if len(sys.argv) > 2: # -> python modo argumentos 
     argumentos = sys.argv[2]
-
 data = handler(modo, argumentos)
 if("get" in modo):
     print(json.dumps(data))

@@ -44,13 +44,17 @@
 .divFile{
     display: flex;
     flex-direction: row;
-    border: 2px solid;
+    outline: 2px solid;
     margin: 1vw 0vw 2vh 0.5vw;
     padding: 1vh 2vw 1vh 2vw;
     border-radius: .5vw;
     align-items: center;
-    transition: background 0.2s ease-in-out;
     cursor: pointer;
+    transition: .3s;
+}
+
+.divFile:hover{
+    background-color: #e5d9d9;
 }
 
 .divFileName{

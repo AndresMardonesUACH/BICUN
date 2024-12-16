@@ -1,0 +1,88 @@
+.modalInput{
+    padding: .5vw;
+    border-radius: .5rem;
+    background-color: white;
+    color: black;
+    border: 1px solid;
+    margin-bottom: 2vh;
+    width: 20vw;
+}
+
+.modalSelect{
+    padding: .5vw;
+    border-radius: .5rem;
+    background-color: white;
+    color: black;
+    border: 1px solid;
+    margin-bottom: 2vh;
+    width: 20vw;
+}
+
+.modalTextArea{
+    padding: .5vw;
+    background-color: white;
+    color: black;
+    border: 1px solid;
+    border-radius: .5rem;
+    resize: none;
+    margin-bottom: 2vh;
+}
+
+.divArchivos{
+    margin-left: 2vw;
+}
+
+.divArchivosList{
+    width: 20vw;
+    border-radius: .5rem;
+    padding: .5vw;
+    max-height: 43vh;
+    overflow-y: scroll;
+}
+
+.divFile{
+    border-radius: .5rem;
+    padding: .5vw;
+    border: 1px solid;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 1vh 0 ;
+}
+
+.divFileName{
+    margin-left: .3vw;
+    margin-right: 3vw;
+    width: 12vw;
+    max-height: 2.5vh;
+    overflow-y: hidden;
+}
+
+.deleteButton{
+    cursor: pointer;
+    transition: .3s;
+}
+
+.deleteButton:hover{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.addFileButton{
+    color: white;
+    background-color: black;
+    transition: .3s;
+}
+
+.addFileButton:hover{
+    background-color: rgb(86, 86, 86);
+}
+
+.publishButton{
+    padding: 0 4rem 0 4rem;
+    transition : .3s;
+}
+
+.publishButton:hover{
+    box-shadow: 0px 6px 5px 2px rgba(209,202,209,1);
+}

@@ -55,13 +55,15 @@ def upload_files():
 
     tituloPost = request.form.get('title')
     publicador = request.form.get('user')
+    descripcion = request.form.get('description')
     tipoPost = request.form.get('type')
     asignaturaPost = request.form.get('asignatura')
     estadoPost = 1
 
     # Servicio de Google Drive
     try:
-        comando = f"python ../persistenciaDatos/persistencia_datos.py insertar {tituloPost}\;desc\;{str(datetime.timestamp(datetime.now()))}\;{estadoPost}\;{publicador}\;{tipoPost}\;{asignaturaPost}\;"
+        #comando = f"python ../persistenciaDatos/persistencia_datos.py insertar {tituloPost}\;desc\;{str(datetime.timestamp(datetime.now()))}\;{estadoPost}\;{publicador}\;{tipoPost}\;{asignaturaPost}\;" # LINUX
+        comando = f"{tituloPost},{descripcion},{str(datetime.timestamp(datetime.now()))},{estadoPost},{publicador},{tipoPost},{asignaturaPost}," # #WINDOWS
         for file in files:
             filename = secure_filename(file.filename)
             filepath = os.path.join('uploads', filename)
@@ -71,9 +73,13 @@ def upload_files():
             # Ejecutar persistencia de datos
             comando += filename 
             if (file!=files[len(files) - 1]):
-                comando += ","
-
-        os.system(comando)
+                comando += "/"
+            print(comando)
+        result = subprocess.run(
+            ['python', '../persistenciaDatos/persistencia_datos.py', 'insertar', comando], 
+            stdout=subprocess.PIPE, 
+            text=True
+        )               
 
         @after_this_request
         def borrar_archivos(response):
@@ -87,15 +93,15 @@ def upload_files():
                 print(f"Error al eliminar los archivos: {e}")
             return response
 
-        return jsonify({'message': 'Archivos subidos exitosamente'}), 200
+        return jsonify({'message': 'Archivos subidos exitosamente', "code": 200})
     except Exception as e:
-        return jsonify({'message': str(e)}), 500
+        return jsonify({'message': str(e), "code": 500})
 
 
 # --------------------------------------------------------------------------------------------
 
 @app.route('/publicaciones/<asignatura>', methods=['GET'])
-def list_files(asignatura):
+def list_posts(asignatura):
     try:
         result = subprocess.run(
             ['python', '../persistenciaDatos/persistencia_datos.py', 'getPublicaciones', asignatura], 
@@ -145,7 +151,6 @@ def list_asignaturas(id_carrera):
             stdout=subprocess.PIPE, 
             text=True
         )
-        print(result)
         response = jsonify(json.loads(result.stdout))
         return response
     except Exception as e:
