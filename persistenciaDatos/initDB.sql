@@ -1,10 +1,3 @@
--- Crear la base de datos
-CREATE DATABASE BICUN;
-
--- Usar la base de datos recién creada
-\c BICUN;
-
-
 CREATE TABLE rol(
     id SERIAL PRIMARY KEY,
     nombre VARCHAR NOT NULL,
