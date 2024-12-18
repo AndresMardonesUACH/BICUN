@@ -232,7 +232,7 @@ def obtenerPublicacionesAsignatura(asignatura:str):
                     'id': pub_id,
                     'titulo': titulo,
                     'descripcion': descripcion,
-                    'fecha_publicacion': fecha_publicacion.isoformat() if fecha_publicacion != None  else None,  # Convertir a string ISO
+                    'fecha_publicacion': fecha_publicacion.strftime("%Y-%m-%d %H:%M") if fecha_publicacion != None  else None,  # Convertir a string ISO
                     'estado': id_estado,
                     'publicador': id_usuario,
                     'tipo_publicacion': id_tipo,
