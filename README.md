@@ -1,4 +1,4 @@
-# Nombre del Proyecto
+# BICUN
 
 
 **BICUN** es un sitio web diseñado para estudiantes de distintas carreras que buscan compartir y acceder a material académico como guías, pruebas, apuntes, entre otros recursos. Su propósito es fomentar la colaboración y el acceso a materiales educativos dentro de la comunidad universitaria.
