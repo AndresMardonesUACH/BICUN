@@ -20,7 +20,7 @@ function Carrera() {
   const { id } = useParams();
 
   const fetchAsignaturas = async () => {
-    const response = await fetch(`http://localhost:5000/asignaturas/${id}`);
+    const response = await fetch(`http://172.233.25.94:5000/asignaturas/${id}`);
     const data = await response.json();
     setAsignaturasList(data);
   };

@@ -6,7 +6,7 @@ export default function PublicacionCard(props) {
 
   const downloadFile = async (fileId, fileName) => { // NUEVO
     // pasar id y nombre del archivo a la ruta de descarga
-    window.location.href = `http://localhost:5000/archivo/${fileId}/${fileName}`;
+    window.location.href = `http://172.233.25.94:5000/archivo/${fileId}/${fileName}`;
     console.log(window.location.href)
   };
 

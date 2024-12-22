@@ -77,7 +77,7 @@ export default function SubirPublicacionCard(props) {
       type: "info",
       duration: 5000,
     });
-    const response = await fetch("http://localhost:5000/publicacion", {
+    const response = await fetch("http://172.233.25.94:5000/publicacion", {
       method: "POST",
       body: formData,
     });

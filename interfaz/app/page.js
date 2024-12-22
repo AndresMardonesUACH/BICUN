@@ -17,7 +17,7 @@ function HomeCarreras() {
   const [carreras, setCarreras] = useState([]);
 
   const fetchCarreras = async () => {
-    const response = await fetch("http://localhost:5000/carreras");
+    const response = await fetch("http://172.233.25.94:5000/carreras");
     const data = await response.json();
     setCarreras(data);
   };

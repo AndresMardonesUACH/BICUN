@@ -36,14 +36,14 @@ function Asignatura() {
 
   const fetchPublicaciones = async () => {
     const response = await fetch(
-      `http://localhost:5000/publicaciones/${id_list[1]}`
+      `http://172.233.25.94:5000/publicaciones/${id_list[1]}`
     );
     const data = await response.json();
     setPublicacionesList(data);
   };
 
   const fetchTipos = async () => {
-    const response = await fetch(`http://localhost:5000/tiposPublicaciones`);
+    const response = await fetch(`http://172.233.25.94:5000/tiposPublicaciones`);
     const data = await response.json();
     setTipos(data);
   };
